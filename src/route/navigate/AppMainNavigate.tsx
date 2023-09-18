@@ -3,16 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainPage from "../../pages/main/MainPage";
 import FullInfoPage from "../../pages/full-info/FullInfoPage";
-import { Text } from "react-native";
-
-export type RootStackParamList = {
-  FullInfo: {
-    urls: {
-      full: string;
-    };
-  };
-  Main: any;
-};
+import { RootStackParamList } from "./types";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

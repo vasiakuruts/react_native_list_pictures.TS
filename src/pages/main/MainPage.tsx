@@ -6,14 +6,17 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  Platform,
 } from "react-native";
-import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppDispatch, useAppSelector } from "../../utils/hook";
 import { getPhotos } from "../../store/thunk";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack/lib/typescript/src/types";
-import { RootStackParamList } from "../../route/navigate/AppMainNavigate";
+import { RootStackParamList } from "../../route/navigate/types";
 import { useNavigation } from "@react-navigation/core";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
+import { styles } from "./styles";
 
 const MainPage = () => {
   const navigation =
@@ -22,6 +25,8 @@ const MainPage = () => {
   const [page, setPage] = useState<number>(1);
   const dispatch = useAppDispatch();
   const { photos } = useAppSelector((state) => state.photos);
+  const insets = useSafeAreaInsets();
+  const offset = Platform.OS === "ios" ? 4 : 20;
 
   useEffect(() => {
     dispatch(getPhotos(page));
@@ -29,43 +34,27 @@ const MainPage = () => {
 
   return (
     <View style={styles.main}>
-      <View style={styles.pageConteiner}>
-        <Text style={styles.title}>Home page</Text>
-
-        <View style={styles.pageArrowConteiner}>
-          <Pressable
-            onPress={() => {
-              listViewRef?.scrollToOffset({ offset: 0, animated: true });
-              setPage(page === 1 ? page : page - 1);
-            }}
-          >
-            <Ionicons name="arrow-back" color={"black"} size={35} />
-          </Pressable>
-          <Text style={styles.pageText}>Page {page}</Text>
-          <Pressable
-            onPress={() => {
-              listViewRef?.scrollToOffset({ offset: 0, animated: true });
-              setPage(page + 1);
-            }}
-          >
-            <Ionicons name="arrow-forward" color={"black"} size={35} />
-          </Pressable>
-        </View>
-      </View>
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         ref={(ref) => (listViewRef = ref)}
         contentContainerStyle={{
           paddingBottom: 50,
         }}
-        style={{ marginTop: 30 }}
+        style={{
+          flex: 1,
+        }}
         data={photos}
         renderItem={({ item }) => (
           <TouchableOpacity
             activeOpacity={0.8}
             key={item.id}
             style={styles.item}
-            onPress={() => navigation.navigate("FullInfo", item)}
+            onPress={() => {
+              navigation.navigate("FullInfo", item);
+              Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Success
+              );
+            }}
           >
             <Image source={{ uri: item.urls.small }} style={styles.image} />
             <Text numberOfLines={2} style={styles.titleItem}>
@@ -78,6 +67,33 @@ const MainPage = () => {
           </TouchableOpacity>
         )}
       />
+      <View style={[styles.pageConteiner, { bottom: offset + insets.bottom }]}>
+        <View style={styles.pageArrowConteiner}>
+          <Pressable
+            onPress={() => {
+              listViewRef?.scrollToOffset({ offset: 0, animated: true });
+              setPage(page === 1 ? page : page - 1);
+              Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Success
+              );
+            }}
+          >
+            <Ionicons name="arrow-back" color={"black"} size={35} />
+          </Pressable>
+          <Text style={styles.pageText}>Page {page}</Text>
+          <Pressable
+            onPress={() => {
+              listViewRef?.scrollToOffset({ offset: 0, animated: true });
+              setPage(page + 1);
+              Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Success
+              );
+            }}
+          >
+            <Ionicons name="arrow-forward" color={"black"} size={35} />
+          </Pressable>
+        </View>
+      </View>
     </View>
   );
 };

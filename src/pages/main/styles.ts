@@ -3,9 +3,9 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   main: {
     flex: 1,
-
     justifyContent: "center",
     textAlign: "center",
+    backgroundColor: "#fff",
   },
 
   item: {
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    marginBottom: 25,
+    marginBottom: 45,
   },
   titleItem: {
     fontFamily: "mt-bold",
@@ -52,24 +52,24 @@ export const styles = StyleSheet.create({
     position: "absolute",
     margin: 0,
     width: "100%",
-    height: "100%",
+    height: "auto",
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
   },
   title: {
-    zIndex: 1,
     fontSize: 20,
     color: "#333",
     fontFamily: "mt-light",
   },
   pageArrowConteiner: {
-    zIndex: 1,
     width: "90%",
     backgroundColor: "#fff",
     borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#C0C0C0",
   },
 });

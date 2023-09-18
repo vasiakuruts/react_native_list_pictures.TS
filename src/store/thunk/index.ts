@@ -6,8 +6,6 @@ export const getPhotos = createAsyncThunk(
   async (page: number, { rejectWithValue }) => {
     try {
       const photos = await unsplashApi.get(`/photos?page=${page}`);
-      console.log(photos.data);
-
       return photos.data;
     } catch (error: any) {
       console.log(error);

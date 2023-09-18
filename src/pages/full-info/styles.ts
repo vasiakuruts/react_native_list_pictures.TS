@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   main: {
     flex: 1,
+    flexDirection: "row-reverse",
   },
   title: {
     fontSize: 20,
@@ -17,7 +18,9 @@ export const styles = StyleSheet.create({
   },
   escButton: {
     position: "absolute",
-    margin: 10,
-    zIndex: 1,
+    flexDirection: "column-reverse",
+    justifyContent: "center",
+    top: 40,
+    left: 30,
   },
 });
